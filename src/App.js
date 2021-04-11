@@ -4,13 +4,13 @@ import './App.css';
 import MovieList from './components/MovieList';
 import MovieListHeading from './components/MovieListHeading';
 import SearchBox from './components/SearchBox';
-import AddFavourites from './components/AddFavourites';
-import RemoveFavourites from './components/RemoveFavourites';
+import AddFavorites from './components/AddFavorites';
+import RemoveFavorites from './components/RemoveFavorites';
 
 const App = () => {
 	const [movies, setMovies] = useState([]);
+	const [favorites, setFavorites] = useState([]);
 	const [searchValue, setSearchValue] = useState('');
-	const [favourites, setFavourites] = useState([]);
 
 	const getMovieRequest = async (searchValue) => {
 		const url = `http://www.omdbapi.com/?s=${searchValue}&apikey=263d22d8`;
@@ -23,22 +23,36 @@ const App = () => {
 		}
 	};
 
-	const addFavouriteMovie = (movie) => {
-		const newFavouriteList = [...favourites, movie];
-		setFavourites(newFavouriteList);
-	};
-
-	const removeFavouriteMovie = (movie) => {
-		const newFavouriteList = favourites.filter(
-			(favourite) => favourite.imdbID !== movie.imdbID
-		);
-
-		setFavourites(newFavouriteList);
-	};
-
 	useEffect(() => {
 		getMovieRequest(searchValue);
 	}, [searchValue]);
+
+	useEffect(() => {
+		const movieFavorites = JSON.parse(
+			localStorage.getItem('react-movie-app-favorites')
+		);
+
+		setFavorites(movieFavorites);
+	}, []);
+
+	const saveToLocalStorage = (items) => {
+		localStorage.setItem('react-movie-app-favorites', JSON.stringify(items));
+	};
+
+	const addFavoriteMovie = (movie) => {
+		const newFavoriteList = [...favorites, movie];
+		setFavorites(newFavoriteList);
+		saveToLocalStorage(newFavoriteList);
+	};
+
+	const removeFavoriteMovie = (movie) => {
+		const newFavoriteList = favorites.filter(
+			(favorite) => favorite.imdbID !== movie.imdbID
+		);
+
+		setFavorites(newFavoriteList);
+		saveToLocalStorage(newFavoriteList);
+	};
 
 	return (
 		<div className='container-fluid movie-app'>
@@ -49,18 +63,18 @@ const App = () => {
 			<div className='row'>
 				<MovieList
 					movies={movies}
-					favouriteComponent={AddFavourites}
-					handleFavouritesClick={addFavouriteMovie}
+					handleFavoritesClick={addFavoriteMovie}
+					favoriteComponent={AddFavorites}
 				/>
 			</div>
 			<div className='row d-flex align-items-center mt-4 mb-4'>
-				<MovieListHeading heading='Favourites' />
+				<MovieListHeading heading='Favorites' />
 			</div>
 			<div className='row'>
 				<MovieList
-					movies={favourites}
-					handleFavouritesClick={removeFavouriteMovie}
-					favouriteComponent={RemoveFavourites}
+					movies={favorites}
+					handleFavoritesClick={removeFavoriteMovie}
+					favoriteComponent={RemoveFavorites}
 				/>
 			</div>
 		</div>
