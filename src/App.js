@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import MovieListHeading from './components/MovieListHeading';
+
 
 
 const App = () => {
@@ -19,6 +21,9 @@ const App = () => {
 
 	return (
 		<div className='container-fluid movie-app'>
+			<div className='row d-flex align-items-center mt-4 mb-4'>
+				<MovieListHeading heading='Favourites' />
+			</div>
 			<div className="row">
 				<MovieList />
 			</div>
