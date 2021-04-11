@@ -1,11 +1,13 @@
+import React, { useState } from 'react';
 import './App.css';
 
-function App() {
+
+const App = () => {
+	const [movies, setMovies] = useState([]);
+
 	return (
-		<div className="App">
-			<h1>Movie App</h1>
-		</div>
-	);
+		<MovieList></MovieList>
+	)
 }
 
 export default App;
