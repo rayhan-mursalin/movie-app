@@ -5,4 +5,4 @@ Movie search app built with
 
 Deployed with Netlify.
 
-Demo: https://sharp-wilson-da6727.netlify.app/
+Demo: https://rayhan-movie-app.netlify.app/
